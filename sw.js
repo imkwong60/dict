@@ -1,5 +1,5 @@
 const CACHE='cangjie-pwa-v3';
-const CORE=['./','./index.html','./manifest.json','./icon.svg'];
+const CORE=['./','./index.html','./manifest.json','./icon.svg','./icon-192.png','./icon-512.png'];
 const OPTIONAL=['./dict.txt'];
 self.addEventListener('install',e=>e.waitUntil((async()=>{
   const c=await caches.open(CACHE);
