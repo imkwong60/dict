@@ -2,127 +2,166 @@
 <html lang="zh-HK">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>倉頡本本</title>
 <meta name="theme-color" content="#18181b">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="倉頡字典">
+<meta name="apple-mobile-web-app-title" content="倉頡本本">
 <meta name="description" content="離線優先的倉頡五代單字拆碼工具">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
-@font-face{font-family:Zen;src:local("Noto Sans TC"),local("PingFang TC"),local("Microsoft JhengHei");font-display:swap}
 :root{--bg:#0f0f11;--panel:#27272a;--panel2:#18181b;--line:#3f3f46;--accent:#fb7185;--accent2:#fda4af;--muted:#a1a1aa;--text:#f4f4f5;--good:#34d399}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;background:var(--bg);color:var(--text);font-family:Zen,system-ui,sans-serif}
+html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;background:var(--bg);color:var(--text);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
 body{position:fixed;inset:0;overscroll-behavior:none}
-button,input,textarea{font:inherit}button{touch-action:manipulation}
+button,input,textarea{font:inherit}button{touch-action:manipulation;cursor:pointer}
 .app{height:100%;display:flex;flex-direction:column;max-width:760px;margin:auto}
 header{flex:none;padding:calc(env(safe-area-inset-top) + 14px) 18px 14px;background:rgba(39,39,42,.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(251,113,133,.18);border-radius:0 0 26px 26px;display:flex;align-items:center;justify-content:space-between;z-index:3}
 .brand{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:14px;overflow:hidden;background:#09090b;border:1px solid rgba(251,113,133,.35);display:grid;place-items:center;box-shadow:0 8px 22px #0008}.logo img{width:100%;height:100%;display:block;object-fit:cover}.title{font-weight:900;font-size:17px;letter-spacing:.04em}.sub{font-size:11px;color:var(--muted);margin-top:2px}.status{display:inline-flex;align-items:center;gap:5px}.dot{width:7px;height:7px;border-radius:50%;background:var(--good)}
-.iconbtn{width:38px;height:38px;border-radius:12px;border:1px solid #52525b;background:#3f3f46;display:grid;place-items:center;cursor:pointer;padding:4px;overflow:hidden}.iconbtn img{width:100%;height:100%;display:block;border-radius:9px;object-fit:cover}
+.iconbtn{width:38px;height:38px;border-radius:12px;border:1px solid #52525b;background:#3f3f46;display:grid;place-items:center;color:var(--accent2);padding:0}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 main{flex:1;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:18px 16px 100px}
 .searchbox{position:sticky;top:0;z-index:2;padding-bottom:12px;background:linear-gradient(var(--bg) 75%,transparent)}
-textarea{width:100%;min-height:118px;resize:none;background:#18181b;border:1px solid #3f3f46;border-radius:20px;padding:15px 16px;color:var(--text);outline:none;font-size:18px;line-height:1.55;box-shadow:inset 0 1px 0 #fff04}.searchline{display:flex;gap:8px;margin-top:9px}.searchline input{flex:1;background:#27272a;border:1px solid #3f3f46;border-radius:15px;padding:10px 12px;color:var(--text);outline:none}.searchline button{background:#3f3f46;border:1px solid #52525b;color:#fda4af;border-radius:15px;padding:0 14px}
+textarea{width:100%;min-height:118px;resize:none;background:#18181b;border:1px solid #3f3f46;border-radius:20px;padding:15px 16px;color:var(--text);outline:none;font-size:18px;line-height:1.55;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.searchline{display:flex;gap:8px;margin-top:9px}.searchline input{flex:1;min-width:0;background:#27272a;border:1px solid #3f3f46;border-radius:15px;padding:10px 12px;color:var(--text);outline:none;font-size:16px}.searchline button{background:#3f3f46;border:1px solid #52525b;color:#fda4af;border-radius:15px;padding:0 14px}
 .hint{margin:10px 3px 0;color:#71717a;font-size:11px}
 .section{margin-top:18px}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:0 2px 9px}.sectionhead h2{font-size:12px;color:#a1a1aa;margin:0;font-weight:800;letter-spacing:.08em}.count{font-size:10px;background:#27272a;border:1px solid #3f3f46;color:#a1a1aa;padding:3px 8px;border-radius:999px}
 .results{display:flex;flex-direction:column;gap:8px}
 .card{background:rgba(39,39,42,.86);border:1px solid #3f3f46;border-radius:20px;padding:12px 13px;display:flex;align-items:center;gap:12px;box-shadow:0 5px 18px #0003}
-.char{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;font-size:35px;line-height:1;width:48px;text-align:center;font-weight:600}.meta{flex:1;min-width:0}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fda4af;font-weight:900;font-size:17px;letter-spacing:.12em}.roots{font-size:11px;color:#a1a1aa;margin-top:5px}.copy{width:34px;height:34px;border-radius:11px;background:#18181b;border:1px solid #3f3f46;display:grid;place-items:center;padding:5px;overflow:hidden}.copy img{width:100%;height:100%;display:block;border-radius:7px;object-fit:cover}
+.char{font-size:35px;line-height:1;width:48px;text-align:center;font-weight:600;flex:none}.meta{flex:1;min-width:0}
+.row{display:flex;align-items:center;gap:10px}.row+.row{margin-top:10px;padding-top:10px;border-top:1px dashed #3f3f46}.rowtext{flex:1;min-width:0}
+.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fda4af;font-weight:900;font-size:17px;letter-spacing:.12em}.roots{font-size:11px;color:#a1a1aa;margin-top:5px}
+.copy{flex:none;width:34px;height:34px;border-radius:11px;background:#18181b;border:1px solid #3f3f46;display:grid;place-items:center;padding:0;color:#fda4af}.copy svg{width:17px;height:17px;pointer-events:none}
 .pill{font-size:10px;color:#a1a1aa;border:1px solid #3f3f46;background:#18181b;border-radius:999px;padding:3px 7px;margin-left:6px}
 .empty{text-align:center;color:#71717a;padding:35px 10px;font-size:13px}.empty strong{display:block;color:#d4d4d8;font-size:16px;margin-bottom:5px}
 .bottom{position:fixed;left:0;right:0;bottom:0;z-index:4;max-width:760px;margin:auto;background:rgba(39,39,42,.96);backdrop-filter:blur(14px);border-top:1px solid rgba(251,113,133,.18);border-radius:26px 26px 0 0;padding:8px 14px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:space-around}
-.nav{border:0;background:none;color:#71717a;padding:7px 16px;border-radius:16px;font-size:11px;font-weight:800}.nav.active{color:#fb7185;background:#18181b}.nav span{display:block;width:22px;height:22px;margin:0 auto 3px}.nav span img{width:100%;height:100%;display:block;border-radius:6px;object-fit:cover}
+.nav{border:0;background:none;color:#71717a;padding:7px 16px;border-radius:16px;font-size:11px;font-weight:800}.nav.active{color:#fb7185;background:#18181b}.nav svg{display:block;margin:0 auto 3px}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(10px);background:#27272a;color:#fff;border:1px solid rgba(251,113,133,.45);padding:10px 16px;border-radius:999px;font-size:12px;font-weight:800;opacity:0;pointer-events:none;transition:.2s;z-index:9;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 dialog{border:0;border-radius:24px;background:#27272a;color:#f4f4f5;max-width:560px;width:calc(100% - 30px);padding:0;box-shadow:0 25px 80px #000b}dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}.modal{padding:18px}.modal h3{margin:0 0 8px;font-size:15px;color:#fda4af}.modal p{font-size:12px;color:#a1a1aa;line-height:1.7}.modal button{margin-top:8px;width:100%;padding:11px;border:0;border-radius:14px;background:#fb7185;color:#fff;font-weight:900}
+.hidden-ta{position:fixed;left:-9999px;top:0;width:1px;height:1px;min-height:0;opacity:0}
 @media(min-width:700px){main{padding-left:24px;padding-right:24px}.card{padding:14px 16px}.char{font-size:40px}}
 </style>
 </head>
 <body>
 <div class="app">
 <header>
-  <div class="brand"><div class="logo"><img src="icon.svg" alt=""></div><div><div class="title">倉頡字典</div><div class="sub"><span class="status"><i class="dot" id="dot"></i><span id="status">正在準備字庫…</span></span></div></div></div>
-  <button class="iconbtn" id="info" aria-label="資料來源"><img src="icon.svg" alt=""></button>
+  <div class="brand"><div class="logo"><img src="icon-192.png" alt=""></div><div><div class="title">倉頡本本</div><div class="sub"><span class="status"><i class="dot" id="dot"></i><span id="status">正在準備字庫…</span></span></div></div></div>
+  <button class="iconbtn" id="info" aria-label="資料來源"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></svg></button>
 </header>
 <main id="main">
   <div class="searchbox">
     <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="輸入或貼上中文句子…&#10;例如：我今日去香港食飯。"></textarea>
-    <div class="searchline"><input id="find" placeholder="查單字，例如：龍" maxlength="2"><button id="clear">清除</button></div>
-    <div class="hint">即時逐字拆碼 · 支援中英混排 · 點擊碼可複製</div>
+    <div class="searchline"><input id="find" placeholder="查單字，例如：龍" autocomplete="off"><button id="clear">清除</button></div>
+    <div class="hint">即時逐字拆碼 · 中英混排時只拆中文字 · 重複的字只顯示一次 · 點擊複製鈕可複製碼</div>
   </div>
   <section class="section">
     <div class="sectionhead"><h2>拆碼結果</h2><span class="count" id="count">0 字</span></div>
     <div class="results" id="results"><div class="empty"><strong>輸入文字開始</strong>每個中文字會即時顯示倉頡五代碼</div></div>
   </section>
 </main>
-<nav class="bottom"><button class="nav active"><span><img src="icon.svg" alt=""></span>查字</button><button class="nav" id="sourceBtn"><span><img src="icon.svg" alt=""></span>資料</button></nav>
-<div class="toast" id="toast">已複製</div>
+<nav class="bottom">
+  <button class="nav active" id="searchBtn"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>查字</button>
+  <button class="nav" id="sourceBtn"><svg class="i" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M9 8h6"/></svg>資料</button>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite">已複製</div>
 <dialog id="dlg"><div class="modal"><h3>倉頡字庫資料</h3><p>本工具採用「倉頡五代補完計劃」的 Cangjie5_special 碼表作為離線字庫來源。資料以官方資料為主要參考，並收錄常用系統可顯示的漢字。字庫檔 dict.txt 與程式一同部署，安裝後會自動預先快取，無需外部網絡，完全斷網也能使用。</p><p>字庫會建立本機 IndexedDB 索引；程式不會連接任何外部網絡，也不會上傳你輸入的句子。</p><input type="file" id="file" accept=".txt,text/plain" hidden><button id="importBtn" style="background:#3f3f46;color:#fda4af">匯入字庫檔（dict.txt）</button><button id="closeDlg">知道了</button></div></dialog>
 <script>
-const DICT_FILE='./dict.txt', DICT_VER=2;
+const DICT_FILE='./dict.txt', DICT_VER=3, MAX_CARDS=1000, CHUNK=40;
 const DB_NAME='CangjieDictionaryPWA', DB_VERSION=1, STORE='meta';
-const input=document.getElementById('input'), results=document.getElementById('results'), countEl=document.getElementById('count');
-const statusEl=document.getElementById('status'), dot=document.getElementById('dot'), find=document.getElementById('find');
+const $=id=>document.getElementById(id);
+const input=$('input'), results=$('results'), countEl=$('count'), statusEl=$('status'), dot=$('dot'), find=$('find'), toastEl=$('toast'), dlg=$('dlg');
 let dict=null, ready=false, renderToken=0, toastTimer;
 const roots={a:'日',b:'月',c:'金',d:'木',e:'水',f:'火',g:'土',h:'竹',i:'戈',j:'十',k:'大',l:'中',m:'一',n:'弓',o:'人',p:'心',q:'手',r:'口',s:'尸',t:'廿',u:'山',v:'女',w:'田',x:'難',y:'卜',z:'重'};
+const COPY_SVG='<svg class="i" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>';
+const EMPTY_HTML='<div class="empty"><strong>輸入文字開始</strong>每個中文字會即時顯示倉頡五代碼</div>';
 function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,DB_VERSION);r.onupgradeneeded=()=>r.result.createObjectStore(STORE);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
 async function getSaved(){const db=await openDB();return new Promise((res,rej)=>{const r=db.transaction(STORE).objectStore(STORE).get('dict');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
 async function saveDict(d){const db=await openDB();return new Promise((res,rej)=>{const r=db.transaction(STORE,'readwrite').objectStore(STORE).put(d,'dict');r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
-function parse(text){const m=new Map();for(const line of text.split(/\r?\n/)){if(!line||line[0]==='#')continue;const p=line.split('\t');if(p.length<2)continue;const ch=p[0],code=p[1].trim();if(!ch||!code||code.length>5)continue;if(!m.has(ch))m.set(ch,code)}return m}
+// char -> [codes...]; keeps every variant code, in file order
+function parse(text){
+  const m=new Map();
+  for(const line of text.split(/\r?\n/)){
+    if(!line||line[0]==='#')continue;
+    const p=line.split('\t'); if(p.length<2)continue;
+    const ch=p[0].trim(), code=p[1].trim().toLowerCase();
+    if(!ch||[...ch].length!==1||!/^[a-z]{1,5}$/.test(code))continue;
+    const a=m.get(ch); if(!a)m.set(ch,[code]); else if(!a.includes(code))a.push(code);
+  }
+  return m;
+}
+function setReady(){statusEl.textContent=`離線字庫已就緒 · ${dict.size.toLocaleString()} 字`;dot.style.background='#34d399'}
 async function useText(text,src){
   const m=parse(text); if(m.size<500)throw new Error('字庫內容不正確');
   dict=m; ready=true;
-  try{await saveDict({v:DICT_VER,data:[...m.entries()],source:src,at:Date.now()})}catch(e){}
-  statusEl.textContent=`離線字庫已就緒 · ${m.size.toLocaleString()} 字`;dot.style.background='#34d399'; render();
+  try{await saveDict({v:DICT_VER,data:m,source:src,at:Date.now()})}catch(e){}
+  setReady(); render();
 }
 async function loadDict(){
   statusEl.textContent='讀取本機字庫…';
   try{ if(navigator.storage&&navigator.storage.persist)navigator.storage.persist() }catch(e){}
   try{
     const saved=await getSaved();
-    if(saved && saved.v===DICT_VER && saved.data){dict=new Map(saved.data); ready=true;statusEl.textContent=`離線字庫已就緒 · ${dict.size.toLocaleString()} 字`;dot.style.background='#34d399';render();return}
+    if(saved && saved.v===DICT_VER && saved.data instanceof Map && saved.data.size>=500){dict=saved.data;ready=true;setReady();render();return}
   }catch(e){}
   try{
     const r=await fetch(DICT_FILE); if(!r.ok)throw new Error(r.status);
     await useText(await r.text(),DICT_FILE); return;
   }catch(e){console.warn('dict.txt',e)}
   statusEl.textContent='找不到字庫，請匯入 dict.txt';dot.style.background='#fbbf24';
-  results.innerHTML='<div class="empty"><strong>尚未有字庫</strong>請按右上角「資料」→「匯入字庫檔」選擇 dict.txt</div>';
+  results.innerHTML='<div class="empty"><strong>尚未有字庫</strong>請按下方「資料」→「匯入字庫檔」選擇 dict.txt</div>';
 }
 function rootsText(code){return [...code].map(x=>roots[x]||x).join(' ')}
 function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function isCJK(ch){const n=ch.codePointAt(0);return (n>=0x3400&&n<=0x9fff)||(n>=0x20000&&n<=0x323af)}
-function render(){
-  const token=++renderToken; const text=input.value; let chars=[...text]; let q=find.value.trim();
-  if(q){chars=[...q].filter(isCJK)}
-  if(!text && !q){results.innerHTML='<div class="empty"><strong>輸入文字開始</strong>每個中文字會即時顯示倉頡五代碼</div>';countEl.textContent='0 字';return}
-  if(!ready){results.innerHTML='<div class="empty"><strong>字庫仍在準備</strong>完成後會自動顯示結果</div>';return}
-  const frag=document.createDocumentFragment();let n=0;
-  for(const ch of chars){
-    if(token!==renderToken)return;
-    if(!isCJK(ch))continue;
-    n++; const code=dict.get(ch);
-    const card=document.createElement('div');card.className='card';
-    if(code){
-      card.innerHTML=`<div class="char">${esc(ch)}</div><div class="meta"><div class="code">${esc(code)}</div><div class="roots">${esc(rootsText(code))}<span class="pill">五代</span></div></div><button class="copy" title="複製碼"><img src="icon.svg" alt=""></button>`;
-      card.querySelector('.copy').onclick=()=>copy(code);
-    }else{
-      card.innerHTML=`<div class="char">${esc(ch)}</div><div class="meta"><div class="code" style="color:#71717a">未收錄</div><div class="roots">此字不在目前 special 字庫</div></div>`;
-    }
-    frag.appendChild(card);
+function isCJK(ch){const n=ch.codePointAt(0);return (n>=0x3400&&n<=0x9fff)||(n>=0xf900&&n<=0xfaff)||(n>=0x20000&&n<=0x323af)}
+function makeCard(ch){
+  const codes=dict.get(ch);
+  const card=document.createElement('div');card.className='card';
+  if(codes){
+    const rows=codes.map((c,i)=>`<div class="row"><div class="rowtext"><div class="code">${esc(c)}</div><div class="roots">${esc(rootsText(c))}${i===0?'<span class="pill">五代</span>':''}</div></div><button class="copy" data-code="${esc(c)}" aria-label="複製 ${esc(c)}" title="複製碼">${COPY_SVG}</button></div>`).join('');
+    card.innerHTML=`<div class="char">${esc(ch)}</div><div class="meta">${rows}</div>`;
+  }else{
+    card.innerHTML=`<div class="char">${esc(ch)}</div><div class="meta"><div class="code" style="color:#71717a">未收錄</div><div class="roots">此字不在目前 special 字庫</div></div>`;
   }
-  results.innerHTML='';results.appendChild(frag);countEl.textContent=`${n} 字`;
+  return card;
 }
-async function copy(s){try{await navigator.clipboard.writeText(s)}catch{const t=document.createElement('textarea');t.value=s;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}toastEl.textContent='已複製：'+s;toastEl.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toastEl.classList.remove('show'),1100)}
-const toastEl=document.getElementById('toast');
+function render(){
+  const token=++renderToken; const text=input.value; const q=find.value.trim();
+  if(!text && !q){results.innerHTML=EMPTY_HTML;countEl.textContent='0 字';return}
+  if(!ready){results.innerHTML='<div class="empty"><strong>字庫仍在準備</strong>完成後會自動顯示結果</div>';return}
+  const uniq=[...new Set([...(q||text)].filter(isCJK))];
+  if(!uniq.length){results.innerHTML='<div class="empty"><strong>沒有中文字</strong>只會拆解中文字，其他字元會被略過</div>';countEl.textContent='0 字';return}
+  const shown=uniq.slice(0,MAX_CARDS);
+  results.innerHTML='';
+  countEl.textContent=uniq.length>MAX_CARDS?`${MAX_CARDS} / ${uniq.length} 字`:`${uniq.length} 字`;
+  let i=0;
+  (function step(){
+    if(token!==renderToken)return;
+    const frag=document.createDocumentFragment();
+    for(const end=Math.min(i+CHUNK,shown.length);i<end;i++)frag.appendChild(makeCard(shown[i]));
+    results.appendChild(frag);
+    if(i<shown.length)requestAnimationFrame(step);
+    else if(uniq.length>MAX_CARDS){const n=document.createElement('div');n.className='empty';n.textContent=`只顯示前 ${MAX_CARDS} 個不重複的字`;results.appendChild(n)}
+  })();
+}
+async function copy(s){
+  try{await navigator.clipboard.writeText(s)}
+  catch{const t=document.createElement('textarea');t.className='hidden-ta';t.value=s;document.body.appendChild(t);t.select();try{document.execCommand('copy')}catch(e){}t.remove()}
+  toastEl.textContent='已複製：'+s;toastEl.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toastEl.classList.remove('show'),1100);
+}
+results.addEventListener('click',e=>{const b=e.target.closest('.copy');if(b)copy(b.dataset.code)});
 input.addEventListener('input',()=>{if(find.value)find.value='';render()});
 find.addEventListener('input',()=>{if(find.value)input.value='';render()});
-document.getElementById('clear').onclick=()=>{input.value='';find.value='';input.focus();render()};
-document.getElementById('info').onclick=()=>dlg.showModal();
-document.getElementById('sourceBtn').onclick=()=>dlg.showModal();
-document.getElementById('closeDlg').onclick=()=>dlg.close();
-document.getElementById('importBtn').onclick=()=>document.getElementById('file').click();
-document.getElementById('file').onchange=async e=>{const f=e.target.files[0];if(!f)return;
+$('clear').onclick=()=>{input.value='';find.value='';input.focus();render()};
+$('info').onclick=()=>dlg.showModal();
+$('sourceBtn').onclick=()=>dlg.showModal();
+$('searchBtn').onclick=()=>{$('main').scrollTo({top:0,behavior:'smooth'});input.focus()};
+$('closeDlg').onclick=()=>dlg.close();
+$('importBtn').onclick=()=>$('file').click();
+$('file').onchange=async e=>{const f=e.target.files[0];if(!f)return;
   try{await useText(await f.text(),'import:'+f.name);dlg.close()}catch(err){statusEl.textContent='匯入失敗：檔案格式不正確';dot.style.background='#fb7185'}e.target.value=''};
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 loadDict();
